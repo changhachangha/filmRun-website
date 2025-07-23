@@ -31,8 +31,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko">
-      <body className={`${inter.className} antialiased`}>
+    <html lang="ko" suppressHydrationWarning>
+      <body className={`${inter.className} antialiased`} suppressHydrationWarning>
         <Header />
         <main className="min-h-screen pt-20">{children}</main>
         <Footer />

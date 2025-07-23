@@ -1,182 +1,222 @@
-'use client';
-
-import { motion } from 'framer-motion';
+import { Logo } from '@/components/ui/Logo';
+import { films } from '@/lib/data/films';
 import Link from 'next/link';
-import { Button } from '@/components/ui/Button';
 
 export default function Home() {
+  const filmographyFilms = films.filter((film) => film.category === 'filmography');
+  const releasedFilmography = filmographyFilms.filter((film) => film.status === 'released');
+  const upcomingFilmography = filmographyFilms.filter((film) => film.status === 'upcoming');
+
   return (
     <>
-      {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 to-blue-800">
-        <div className="absolute inset-0 bg-black/20" />
-        <div className="relative z-10 text-center text-white">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="space-y-6"
-          >
-            {/* Film Run Logo */}
-            <div className="mb-8">
-              <div className="inline-flex items-center justify-center space-x-2">
-                <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
-                  <div className="w-12 h-12 relative">
-                    {/* Abstract logo shapes */}
-                    <div className="absolute top-1 left-1 w-4 h-4 bg-blue-600 rounded-full" />
-                    <div className="absolute top-0 right-2 w-3 h-3 bg-blue-600 rounded-full" />
-                    <div className="absolute bottom-1 left-3 w-5 h-5 bg-blue-600 rounded-full" />
-                    <div className="absolute bottom-0 right-0 w-2 h-2 bg-blue-600 rounded-full" />
+      {/* Hero Section - Minimal */}
+      <section className="bg-white dark:bg-gray-900 py-24">
+        <div className="w-full px-6 lg:px-16 xl:px-24">
+          <div className="text-center">
+            <div className="mb-12">
+              <Logo size="lg" />
+            </div>
+            <h1 className="text-5xl md:text-6xl font-light text-gray-900 dark:text-gray-100 mb-4">
+              FILM RUN
+            </h1>
+            <h2 className="text-xl text-gray-700 dark:text-gray-300 mb-8">영화사 달리기</h2>
+          </div>
+        </div>
+      </section>
+
+      {/* Company Overview */}
+      <section className="py-20 bg-gray-50 dark:bg-gray-800">
+        <div className="w-full px-6 lg:px-16 xl:px-24">
+          <div className="text-center">
+            <div className="space-y-8">
+              <div>
+                <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-8 max-w-6xl mx-auto">
+                  영화사 달리기는 스토리텔링의 핵심 가치를 중시하며, 한국 영화
+                  산업 내에서 다양하고 독창적인 장편 영화를 제작하는 것을 목표로
+                  합니다. 제작자와 관객의 요구를 조화시키며, 세상을 향한
+                  진실하고 겸손한 관점으로 중저예산 장르 프로젝트를 전문으로
+                  합니다.
+                </p>
+              </div>
+
+              <div className="border-t border-gray-200 dark:border-gray-700 pt-8">
+                <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed max-w-6xl mx-auto">
+                  <strong>Film Run</strong> seeks to produce diverse and
+                  distinctive feature films within the Korean film industry.
+                  Putting the emphasis on the importance of storytelling at its
+                  utmost core, we harmonize the filmmaker and audience&apos;s
+                  needs through low to mid-budget genre projects with a truthful
+                  and humble point of view toward the world. We believe in true
+                  collaboration and enjoy working with filmmakers with strong
+                  artistic vision and sensitivity. We have expertise in both
+                  domestic and international co-production, and our latest
+                  titles have been screened at major film festivals worldwide.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Filmography */}
+      <section className="py-20 bg-white dark:bg-gray-900">
+        <div className="w-full px-6 lg:px-16 xl:px-24">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-light text-gray-900 dark:text-gray-100 mb-4">
+              FILMOGRAPHY
+            </h2>
+            <h3 className="text-xl font-light text-gray-600 dark:text-gray-400 mb-12">
+              필모그래피
+            </h3>
+          </div>
+
+          {/* Films Grid */}
+          <div className="flex justify-center">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+              {[...releasedFilmography, ...upcomingFilmography].map((film) => (
+                <div key={film.id} className="group">
+                  <Link href={`/films/${film.id}`}>
+                    <div className="space-y-4">
+                      <div className="aspect-[3/4] bg-gray-100 dark:bg-gray-800 overflow-hidden w-full max-w-xs mx-auto">
+                        {film.posterUrl ? (
+                          <img
+                            src={film.posterUrl}
+                            alt={film.title}
+                            className="w-full h-full object-cover grayscale group-hover:grayscale-0"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center bg-gray-200 dark:bg-gray-700">
+                            <div className="text-center text-gray-400 dark:text-gray-500">
+                              <div className="text-4xl mb-2">🎬</div>
+                              <p className="text-sm">Coming Soon</p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                      <div className="text-center space-y-2">
+                        <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 group-hover:text-gray-600 dark:group-hover:text-gray-400">
+                          {film.title}
+                        </h3>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">{film.titleKo}</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                          {film.director} | {film.year}
+                        </p>
+                        {film.status === 'released' &&
+                          film.awards &&
+                          film.awards.length > 0 && (
+                            <p className="text-xs text-gray-500 dark:text-gray-400 italic">
+                              {film.awards[0]}
+                            </p>
+                          )}
+                        {film.status === 'upcoming' && (
+                          <p className="text-xs text-blue-600 dark:text-blue-400 font-medium">
+                            Upcoming
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CEO & Producer Profile */}
+      <section className="py-20 bg-white dark:bg-gray-900">
+        <div className="w-full px-6 lg:px-16 xl:px-24">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-light text-gray-900 dark:text-gray-100 mb-4">TEAM</h2>
+            <h3 className="text-xl font-light text-gray-600 dark:text-gray-400 mb-12">팀</h3>
+          </div>
+
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-16 max-w-7xl mx-auto">
+            {/* CEO Card */}
+            <div className="group">
+              <div className="p-8">
+                <div className="flex flex-col md:flex-row gap-6">
+                  <div className="flex-shrink-0">
+                    <div className="aspect-[3/4] bg-gray-100 dark:bg-gray-800 overflow-hidden w-48 mx-auto md:mx-0">
+                      <img
+                        src="/images/img36.jpg"
+                        alt="PARK DOO-HEE"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <div className="mb-4">
+                      <h3 className="text-xl font-medium text-gray-900 dark:text-gray-100 mb-1">
+                        PARK DOO-HEE
+                      </h3>
+                      <p className="text-primary font-medium text-sm">
+                        CEO / PRODUCER
+                      </p>
+                    </div>
+                    <div className="space-y-3">
+                      <div className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                        <p>
+                          Founder and CEO of Film Run. Former executive at CJ E&M and Little Big Pictures&apos; 
+                          independent film departments. Over 10 years of experience in film production, 
+                          distribution, and marketing.
+                        </p>
+                      </div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                        <p>
+                          Film Run 창립자 겸 대표이사. CJ E&M과 Little Big Pictures 독립영화 부서 임원 출신. 
+                          10년 이상의 영화 제작, 배급, 마케팅 경험 보유.
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <h1 className="text-6xl md:text-8xl font-bold mb-4">
-              영화사 달리기
-            </h1>
-            <h2 className="text-2xl md:text-3xl font-light mb-8">Film Run</h2>
-            <p className="text-xl md:text-2xl font-light max-w-2xl mx-auto leading-relaxed">
-              감정을 움직이는 이야기로
-              <br />
-              세상과 소통하는 영화를 만듭니다
-            </p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="mt-12 space-x-4"
-            >
-              <Link href="/films">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="text-white border-white hover:bg-white hover:text-blue-600"
-                >
-                  작품 보기
-                </Button>
-              </Link>
-              <Link href="/about">
-                <Button
-                  size="lg"
-                  className="bg-white text-blue-600 hover:bg-gray-100"
-                >
-                  회사 소개
-                </Button>
-              </Link>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Latest Films Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-4xl font-bold text-gray-900 text-center mb-16">
-              최신 작품
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {[1, 2, 3].map((item) => (
-                <motion.div
-                  key={item}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: item * 0.1 }}
-                  viewport={{ once: true }}
-                  className="group cursor-pointer"
-                >
-                  <div className="aspect-[3/4] bg-gray-200 rounded-lg overflow-hidden mb-4 group-hover:shadow-lg transition-shadow">
-                    <div className="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400" />
+            {/* Producer Card */}
+            <div className="group">
+              <div className="p-8">
+                <div className="flex flex-col md:flex-row gap-6">
+                  <div className="flex-shrink-0">
+                    <div className="aspect-[3/4] bg-gray-100 dark:bg-gray-800 overflow-hidden w-48 mx-auto md:mx-0">
+                      <img
+                        src="/images/img40.jpg"
+                        alt="CHOI CHAN"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">
-                    영화 제목 {item}
-                  </h3>
-                  <p className="text-gray-600">2025년 개봉 예정</p>
-                </motion.div>
-              ))}
+                  <div className="flex-1">
+                    <div className="mb-4">
+                      <h3 className="text-xl font-medium text-gray-900 dark:text-gray-100 mb-1">
+                        CHOI CHAN
+                      </h3>
+                      <p className="text-primary font-medium text-sm">
+                        PRODUCER
+                      </p>
+                    </div>
+                    <div className="space-y-3">
+                      <div className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                        <p>
+                          Producer in charge of creative development at Film Run. Graduated from Korea National 
+                          University of Arts, Film Department. Participated in Netflix series &ldquo;Sense8&rdquo; (2015) 
+                          and film &ldquo;Okja&rdquo; (2017). Produced independent feature &ldquo;Fairytale in Life&rdquo; (2017).
+                        </p>
+                      </div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                        <p>
+                          Film Run 크리에이티브 개발 담당 프로듀서. 한국예술종합학교 영화과 졸업. 
+                          Netflix 시리즈 「센스8」(2015)과 영화 「옥자」(2017) 참여. 
+                          2017년 독립 장편영화 「Fairytale in Life」 제작.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="text-center mt-12">
-              <Link href="/films">
-                <Button variant="outline" size="lg">
-                  모든 작품 보기
-                </Button>
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* About Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="text-4xl font-bold text-gray-900 mb-6">
-                영화사 달리기
-              </h2>
-              <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                우리는 단순히 영화를 만드는 것이 아니라, 인간의 깊은 감정과
-                복잡한 이야기를 담아내는 의미 있는 작품을 만들어갑니다.
-              </p>
-              <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                각각의 프로젝트는 독특한 시각과 창의적인 접근으로 관객들에게
-                새로운 경험을 선사합니다.
-              </p>
-              <Link href="/about">
-                <Button variant="primary" size="lg">
-                  더 알아보기
-                </Button>
-              </Link>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="aspect-square bg-gray-200 rounded-lg"
-            >
-              <div className="w-full h-full bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg" />
-            </motion.div>
           </div>
-        </div>
-      </section>
-
-      {/* Line Up 2025 Section */}
-      <section className="py-20 bg-blue-600 text-white">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-4xl font-bold mb-6">Line Up 2025</h2>
-            <p className="text-xl mb-8 max-w-2xl mx-auto">
-              2025년 영화사 달리기의 새로운 도전과 더욱 다양한 이야기들을
-              만나보세요
-            </p>
-            <Link href="/news">
-              <Button
-                variant="outline"
-                size="lg"
-                className="text-white border-white hover:bg-white hover:text-blue-600"
-              >
-                최신 소식 보기
-              </Button>
-            </Link>
-          </motion.div>
         </div>
       </section>
     </>
