@@ -6,9 +6,6 @@ interface GlobalState {
   setIsLoading: (loading: boolean) => void;
   currentLanguage: 'ko' | 'en';
   setCurrentLanguage: (language: 'ko' | 'en') => void;
-  theme: 'light' | 'dark';
-  setTheme: (theme: 'light' | 'dark') => void;
-  toggleTheme: () => void;
 }
 
 export const useGlobalStore = create<GlobalState>()(
@@ -18,13 +15,10 @@ export const useGlobalStore = create<GlobalState>()(
       setIsLoading: (isLoading) => set({ isLoading }),
       currentLanguage: 'en',
       setCurrentLanguage: (currentLanguage) => set({ currentLanguage }),
-      theme: 'light',
-      setTheme: (theme) => set({ theme }),
-      toggleTheme: () => set((state) => ({ theme: state.theme === 'light' ? 'dark' : 'light' })),
     }),
     {
       name: 'filmrun-storage',
-      partialize: (state) => ({ theme: state.theme, currentLanguage: state.currentLanguage }),
+      partialize: (state) => ({ currentLanguage: state.currentLanguage }),
       skipHydration: true,
     }
   )
